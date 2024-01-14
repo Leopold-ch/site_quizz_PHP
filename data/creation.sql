@@ -1,0 +1,20 @@
+CREATE TABLE QUESTION (
+    idQuestion INTEGER PRIMARY KEY,
+    enonce VARCHAR(500) NOT NULL
+);
+
+
+CREATE TABLE REPONSE (
+    idReponse INTEGER PRIMARY KEY,
+    contenu VARCHAR(500) NOT NULL
+);
+
+
+CREATE TABLE REPONSE_POSSIBLE (
+    idQuestion INTEGER NOT NULL,
+    idReponse INTEGER NOT NULL,
+    correcte BIT DEFAULT 0,
+    PRIMARY KEY(idQuestion, idReponse),
+    FOREIGN KEY (idQuestion) REFERENCES QUESTION(idQuestion),
+    FOREIGN KEY (idReponse) REFERENCES REPONSE(idReponse)
+);
