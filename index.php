@@ -4,6 +4,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (isset($_POST["nom"])) {
         $nom = $_POST["nom"];
+        echo $nom;
     }
 }
 ?>
@@ -37,11 +38,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
 
         <div class="lancement">
-            <ul>
-                <li><a href=""><input type="button" value="Quizz de 5 questions" /></a></li>
-                <li><a href=""><input type="button" value="Quizz de 10 questions" /></a></li>
-                <li><a href=""><input type="button" value="Quizz de 15 questions" /></a></li>
-            </ul>
+            <?php
+            for ($nbQuestions = 5; $nbQuestions < 16; $nbQuestions+= 5){
+                echo "<form action='questionnaire.php' method='post'>";
+                echo "<input type='text' id='nbTotalQuestions' name='nbTotalQuestions' value='".$nbQuestions."' required />";
+                echo "<input type='submit' value='Quizz de ".$nbQuestions." questions'>";
+                echo "</form>";
+            }
+            ?>
         </div>
     </main>
 </body>

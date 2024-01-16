@@ -1,9 +1,19 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
+    if (isset($_POST["nom"])) {
+        $nom = $_POST["nom"];
+        echo $nom;
+    }
     if (isset($_POST["num_question"])) {
         $num_question = $_POST["num_question"];
+        echo $num_question;
     }
+    if (isset($_POST["nbTotalQuestions"])) {
+        $nbTotalQuestions = $_POST["nbTotalQuestions"];
+        echo $nbTotalQuestions;
+    }
+    
 }
 
 try{

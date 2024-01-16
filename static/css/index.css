@@ -24,7 +24,7 @@ h1, h2{
     padding: 2vh;
 }
 
-.lancement ul {
+.lancement {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -33,7 +33,7 @@ h1, h2{
 }
 
 
-input[type="button"] {
+.lancement input[type="submit"] {
     font-size: 1.3rem;
     display: block;
     text-decoration: none;
