@@ -1,46 +1,42 @@
 <?php
+require 'data/Quizz_BD.php';
+
+echo "<ul>";
+    foreach (questionAleatoire() as $question) {
+        echo "<li>". $question["enonce"] ."". $question["contenu"] ."</li>";
+    }
+echo "</ul>";
+
+//initialisation des variables nécessaires au quizz
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (isset($_POST["nom"])) {
         $nom = $_POST["nom"];
-        echo $nom;
+        echo "nom : ".$nom.PHP_EOL;
     }
-    if (isset($_POST["num_question"])) {
-        $num_question = $_POST["num_question"];
-        echo $num_question;
+    if (isset($_POST["numQuestion"])) {
+        $numQuestion = $_POST["numQuestion"];
+        echo "numQuestion : ".$numQuestion.PHP_EOL;
     }
     if (isset($_POST["nbTotalQuestions"])) {
         $nbTotalQuestions = $_POST["nbTotalQuestions"];
-        echo $nbTotalQuestions;
+        echo "\nnb total de question : ".$nbTotalQuestions.PHP_EOL;
     }
     
+} else {
+    //redirection vers la page d'accueil si on se rend sur questionnaire.php manuellement
+    header("Location: index.php");
+    exit();
 }
 
-try{
-    //le fichier de BD s'appelera Quizz_BD.db
-    $file_db=new PDO("sqlite:data/Quizz_BD.db");
-    $file_db->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_WARNING);
 
-    $result=$file_db->query("SELECT * from QUESTION");
-    echo "<ul>";
-    foreach($result as $r){
-        //echo "<li>".$r["idQuestion"]." - ".$r["enonce"]."</li>";
-    }
-    echo "</ul>";
-
-    //fermeture de la connexion
-    $file_db=null;
-
-}catch(PDOException $e){
-    echo $e->getMessage();
-}
 ?>
 
 <!doctype html>
 <html lang="fr">
 <head>
     <meta charset="utf-8">
-    <?php echo "<title>Question ".$num_question."</title>"; ?>
+    <?php echo "<title>Question ".$numQuestion."</title>"; ?>
     <link rel="stylesheet" href="static/css/index.css">
 </head>
 
@@ -50,7 +46,7 @@ try{
     ?>
 
     <main>
-    <?php echo "<h1>Question n°".$num_question."</h1>"; ?>
+    <?php echo "<h1>Question n°".$numQuestion."</h1>"; ?>
         
     </main>
 </body>

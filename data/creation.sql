@@ -1,11 +1,11 @@
 CREATE TABLE QUESTION (
-    idQuestion INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY,
     enonce VARCHAR(500) NOT NULL
 );
 
 
 CREATE TABLE REPONSE (
-    idReponse INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY,
     contenu VARCHAR(500) NOT NULL
 );
 
@@ -15,6 +15,6 @@ CREATE TABLE REPONSE_POSSIBLE (
     idReponse INTEGER NOT NULL,
     correcte BIT DEFAULT 0,
     PRIMARY KEY(idQuestion, idReponse),
-    FOREIGN KEY (idQuestion) REFERENCES QUESTION(idQuestion),
-    FOREIGN KEY (idReponse) REFERENCES REPONSE(idReponse)
+    FOREIGN KEY (idQuestion) REFERENCES QUESTION(id),
+    FOREIGN KEY (idReponse) REFERENCES REPONSE(id)
 );
