@@ -1,13 +1,15 @@
 <?php
+$nom = null;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    $nom = null;
+    
     if (isset($_POST["nom"])) {
         $nom = $_POST["nom"];
         echo $nom;
     }
 }
+
+if (!empty($_GET['nom'])){$nom = $_GET['nom'];}
 ?>
 
 
@@ -41,12 +43,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="lancement">
             <?php
             for ($nbQuestions = 5; $nbQuestions < 16; $nbQuestions+= 5){
-                echo "<form action='questionnaire.php' method='post'>";
-                echo "<input type='hidden' name='nbTotalQuestions' value='".$nbQuestions."' />";
-                echo "<input type='hidden' name='nom' value='".$nom."' />";
-                echo "<input type='hidden' name='numQuestion' value='1' />";
-                echo "<input type='submit' value='Quizz de ".$nbQuestions." questions'>";
-                echo "</form>";
+                echo <<<FORM
+                    <form action='questionnaire.php' method='post'>
+                    <input type='hidden' name='nbTotalQuestions' value='$nbQuestions' />
+                    <input type='hidden' name='nom' value='$nom' />
+                    <input type='hidden' name='numQuestion' value='1' />
+                    <input type='submit' value='Quizz de $nbQuestions questions'>
+                    </form>
+                FORM;
             }
             ?>
         </div>

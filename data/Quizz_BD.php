@@ -1,5 +1,3 @@
-#!/usr/bin/php
-
 <?php
 
 //chargement de l'intégralité de la base de données
@@ -40,20 +38,43 @@ function idQuestionMax(): int
     return $idQuestionMax;
 }
 
-function questionAleatoire(): array
+function idAleatoire(): int
+{
+    return random_int(1, idQuestionMax());
+}
+
+function getQuestion($id): array
 {
     global $contenuBD;
-    $idAleatoire = random_int(1, idQuestionMax());
     $questionAlleatoire = array();
 
     foreach ($contenuBD as $array){
-        if ($array['idQuestion'] == $idAleatoire){
+        if ($array['idQuestion'] == $id){
             array_push($questionAlleatoire, $array);
         }
     }
 
     return $questionAlleatoire;
 
+}
+
+function reponseCorrectes($idQuestion, $reponses): bool
+{
+    $bonnesReponses = array();
+    foreach (getQuestion($idQuestion) as $array){
+        if ($array["correcte"] == 1){
+            array_push($bonnesReponses, $array["idReponse"]);
+        }
+    }
+    
+    if (count($reponses) != count($bonnesReponses)) {return false;}
+
+    for($i = 0; $i<count($reponses); $i++) {
+        if (!in_array($reponses[$i], $bonnesReponses)) {
+            return false;
+        }
+    }
+    return true;
 }
 
 ?>
