@@ -4,47 +4,21 @@ $nom = "";
 //initialisation des variables nécessaires au quizz
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
-    if (isset($_POST["nom"])) {
-        $nom = $_POST["nom"];
-        echo "nom : ".$nom.PHP_EOL;
-    }
+    if (isset($_POST["nom"])) {$nom = $_POST["nom"];}
 
-    if (isset($_POST["numQuestion"])) {
-        $numQuestion = $_POST["numQuestion"];
-        echo "numQuestion : ".$numQuestion.PHP_EOL;
-    }
+    if (isset($_POST["numQuestion"])) {$numQuestion = $_POST["numQuestion"];}
 
-    if (isset($_POST["nbTotalQuestions"])) {
-        $nbTotalQuestions = $_POST["nbTotalQuestions"];
-        echo "nb total de question : ".$nbTotalQuestions.PHP_EOL;
-    }
+    if (isset($_POST["nbTotalQuestions"])) {$nbTotalQuestions = $_POST["nbTotalQuestions"];}
 
-    if (isset($_POST["score"])) {
-        $score = $_POST["score"];
-        echo "score : ".$score.PHP_EOL;
-    } else {
-        $score = 0;
-    }
+    if (isset($_POST["score"])) {$score = $_POST["score"];}
+    else {$score = 0;}
 
-    if (isset($_POST["idQuestion"])) {
-        $idQuestion = $_POST["idQuestion"];
-        echo "idQuestion : ".$idQuestion.PHP_EOL;
-    } else{
-        $idQuestion = idAleatoire();
-    }
+    if (isset($_POST["choix"])) {$choix = $_POST["choix"];}
+
+    if (isset($_POST["idQuestion"])) {$idQuestion = $_POST["idQuestion"];}
+    else{$idQuestion = idAleatoire();}
+
     $questionPosee = getQuestion($idQuestion);
-
-    if (isset($_POST["choix"])) {
-        $choix = $_POST["choix"];
-        echo "reponses :".print_r($choix).PHP_EOL;
-    }
-
-    echo "<ul>";
-    foreach ($questionPosee as $question) {
-        echo "<li>". $question["enonce"] ." - ". $question["contenu"] ." - ". $question["idQuestion"] ." - ". $question["idReponse"] ."</li>";
-    }
-    echo "</ul>";
-
 
 } else {
     //redirection vers la page d'accueil si on se rend sur questionnaire.php manuellement
@@ -57,7 +31,6 @@ if ($numQuestion > $nbTotalQuestions){
     header("Location: index.php?nom=".$nom);
     exit();
 }
-
 
 ?>
 
@@ -76,19 +49,18 @@ if ($numQuestion > $nbTotalQuestions){
 
     <main>
     <?php
-    echo "<h1>Question n°".$numQuestion."</h1>";
-    echo "<h2>".$questionPosee[0]["enonce"]."</h2>";
+    echo "<h1>Question n°".$numQuestion."</h1>
+    <h2>".$questionPosee[0]["enonce"]."</h2>
 
-
-    echo "<form method='post'>
+    <form method='post'>
     <input type='hidden' name='nom' value='".$nom."' />
     <input type='hidden' name='score' value='$score' />
     <input type='hidden' name='numQuestion' value='".$numQuestion."' />
     <input type='hidden' name='nbTotalQuestions' value='".$nbTotalQuestions."' />
     <input type='hidden' name='idQuestion' value='".$idQuestion."' />
-    <input type='hidden' name='repondu' value='".$repondu."' />";
+    <input type='hidden' name='repondu' value='".$repondu."' />
     
-    echo "<div class='rep'>";
+    <div class='rep'>";
     foreach ($questionPosee as $reponsePossible) {
         $coche = "";
         if (isset($choix) && in_array($reponsePossible["idReponse"], $choix)){
@@ -136,7 +108,6 @@ if ($numQuestion > $nbTotalQuestions){
         FORM;
     }
     ?>
-    
 
     </main>
 </body>
