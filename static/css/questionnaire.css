@@ -1,0 +1,41 @@
+body{
+    text-align: center;
+}
+
+h1, h2{
+    margin-top: 7vh;
+    margin-bottom: 3vh;
+}
+
+p{
+    font-size: 1.3rem;
+}
+
+div {
+    background-color: white;
+    border: solid black;
+    border-radius: 2vh;
+    margin: 4vh auto;
+    padding: 2vh;
+    max-width: 22vw;
+    font-size: 1.4rem;
+}
+
+form {
+    padding: 0;
+    margin: 0;
+    justify-content: center;
+}
+
+form input {
+    
+    font-size: 1.3rem;
+    background-color: black;
+    color: white;
+    padding: 2vh 2vh;
+    border-radius: 1.5vh;
+}
+
+.lancement input:hover {
+    background-color: #444;
+}
