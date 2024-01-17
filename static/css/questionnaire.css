@@ -36,7 +36,7 @@ form input {
     border-radius: 1.5vh;
 }
 
-.lancement input:hover {
+input:hover {
     background-color: #444;
 }
 
