@@ -88,7 +88,7 @@ if ($numQuestion > $nbTotalQuestions){
     <input type='hidden' name='idQuestion' value='".$idQuestion."' />
     <input type='hidden' name='repondu' value='".$repondu."' />";
     
-    echo "<div>";
+    echo "<div class='rep'>";
     foreach ($questionPosee as $reponsePossible) {
         $coche = "";
         if (isset($choix) && in_array($reponsePossible["idReponse"], $choix)){
@@ -119,7 +119,7 @@ if ($numQuestion > $nbTotalQuestions){
         }
         echo "<br><p><b>Score atteint : ".$score." / ".$numQuestion."</b></p>"; 
 
-        $bouton = "Passer à la question suivante";
+        $bouton = "Question suivante";
         if ($numQuestion == $nbTotalQuestions){
             $bouton = "Terminer";
         }
