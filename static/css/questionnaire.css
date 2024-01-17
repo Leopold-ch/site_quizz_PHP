@@ -17,7 +17,7 @@ div {
     border-radius: 2vh;
     margin: 4vh auto;
     padding: 2vh;
-    max-width: 22vw;
+    max-width: 15vw;
     font-size: 1.4rem;
 }
 
@@ -38,4 +38,10 @@ form input {
 
 .lancement input:hover {
     background-color: #444;
+}
+
+label{
+    display: block;
+    float: left;
+    
 }
