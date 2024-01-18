@@ -16,9 +16,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST["choix"])) {$choix = $_POST["choix"];}
 
     if (isset($_POST["idQuestion"])) {$idQuestion = $_POST["idQuestion"];}
-    else{$idQuestion = idAleatoire();}
+    else{$idQuestion = idQuestionAleatoire();}
 
-    $questionPosee = getQuestion($idQuestion);
+    $questionPosee = getQuizz($idQuestion);
 
 } else {
     //redirection vers la page d'accueil si on se rend sur questionnaire.php manuellement
@@ -28,6 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 if ($numQuestion > $nbTotalQuestions){
     //redirection vers la page d'accueil si on est arrivé au bout des questions
+    insererResultat($nbTotalQuestions, $score);
     header("Location: index.php?nom=".$nom);
     exit();
 }
@@ -58,7 +59,6 @@ if ($numQuestion > $nbTotalQuestions){
     <input type='hidden' name='numQuestion' value='".$numQuestion."' />
     <input type='hidden' name='nbTotalQuestions' value='".$nbTotalQuestions."' />
     <input type='hidden' name='idQuestion' value='".$idQuestion."' />
-    <input type='hidden' name='repondu' value='".$repondu."' />
     
     <div class='rep'>";
     foreach ($questionPosee as $reponsePossible) {
@@ -102,7 +102,6 @@ if ($numQuestion > $nbTotalQuestions){
             <input type='hidden' name='numQuestion' value='$numQuestion' />
             <input type='hidden' name='nbTotalQuestions' value='$nbTotalQuestions' />
             <input type='hidden' name='score' value='$score' />
-            <input type='hidden' name='repondu' value='$repondu' />
             <input type='submit' value='$bouton'>
             </form>
         FORM;

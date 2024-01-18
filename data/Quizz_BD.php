@@ -1,84 +1,69 @@
 <?php
 
-//chargement de l'intégralité de la base de données
-try{
-    //le fichier de BD s'appelera Quizz_BD.db
-    $fichierDB=new PDO("sqlite:data/Quizz_BD.db");
-    $fichierDB->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_WARNING);
-
-    $contenuBD = array();
-    $resRequete=$fichierDB->query("select idQuestion, idReponse, correcte, enonce, contenu from REPONSE_POSSIBLE join QUESTION join REPONSE on (REPONSE_POSSIBLE.idQuestion = QUESTION.id) AND (REPONSE_POSSIBLE.idReponse = REPONSE.id);");
-
-    foreach($resRequete as $r){
-        array_push($contenuBD, $r);
-    }
-
-    //fermeture de la connexion
-    $fichierDB=null;
-
-}catch(PDOException $e){
-    echo "Problème de base de données : ".$e->getMessage();
-}
-
-
-//fonction d'obtention du plus grand id de question
-function idQuestionMax(): int
-{
-    global $contenuBD;
-    $idQuestionMax = 0;
-
-    foreach ($contenuBD as $array) {
-        $idQuestion = $array['idQuestion'];
-
-        if ($idQuestion > $idQuestionMax) {
-            $idQuestionMax = $idQuestion;
+//fonction d'obtention du plus grand id d'une table donnée'
+function idMax(string $nomTable): int
+{   
+    $idMax = 0;
+    try{
+        //établissement de la connexion avec la base de données
+        $fichierDB=new PDO("sqlite:data/Quizz_BD.db");
+        $fichierDB->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_WARNING);
+    
+        $resRequete=$fichierDB->query("select max(id) from ".$nomTable.";");
+    
+        foreach($resRequete as $r){
+            if (!is_null($r[0])){
+                $idMax = $r[0];
+            } else {$idMax = 0;}
         }
+    
+        //fermeture de la connexion
+        $fichierDB=null;
+    
+    }catch(PDOException $e){
+        echo "Problème de base de données : ".$e->getMessage();
     }
-
-    return $idQuestionMax;
+    return $idMax;
 }
 
-//fonction d'obtention du plus grand id de reponse
-function idReponseMax(): int
+function idQuestionAleatoire(): int
 {
-    global $contenuBD;
-    $idReponseMax = 0;
+    return random_int(1, idMax("QUESTION"));
+}
 
-    foreach ($contenuBD as $array) {
-        $idReponse = $array['idReponse'];
-
-        if ($idReponse > $idReponseMax) {
-            $idReponseMax = $idReponse;
+//fonction d'obtention d'un quizz (une question et ses réponses)
+function getQuizz(int $id): array
+{
+    $question = array();
+    try{
+        //établissement de la connexion avec la base de données
+        $fichierDB=new PDO("sqlite:data/Quizz_BD.db");
+        $fichierDB->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_WARNING);
+    
+        
+        $resRequete=$fichierDB->query("select idQuestion, idReponse, correcte, enonce, contenu
+        from REPONSE_POSSIBLE join QUESTION join REPONSE on (REPONSE_POSSIBLE.idQuestion = QUESTION.id) AND (REPONSE_POSSIBLE.idReponse = REPONSE.id)
+        WHERE idQuestion=".$id.";");
+    
+        foreach($resRequete as $r){
+            array_push($question, $r);
         }
+
+        //fermeture de la connexion
+        $fichierDB=null;
+
+    }catch(PDOException $e){
+        echo "Problème de base de données : ".$e->getMessage();
     }
-
-    return $idReponseMax;
-}
-
-function idAleatoire(): int
-{
-    return random_int(1, idQuestionMax());
-}
-
-function getQuestion(int $id): array
-{
-    global $contenuBD;
-    $questionAlleatoire = array();
-
-    foreach ($contenuBD as $array){
-        if ($array['idQuestion'] == $id){
-            array_push($questionAlleatoire, $array);
-        }
-    }
-
-    return $questionAlleatoire;
+    return $question;
 
 }
 
+//fonction déterminant si une question a été correctement répondue ou non
 function reponseCorrectes(int $idQuestion, array $reponses): bool
 {
     $bonnesReponses = array();
-    foreach (getQuestion($idQuestion) as $array){
+    foreach (getQuizz($idQuestion) as $array){
         if ($array["correcte"] == 1){
             array_push($bonnesReponses, $array["idReponse"]);
         }
@@ -94,18 +79,21 @@ function reponseCorrectes(int $idQuestion, array $reponses): bool
     return true;
 }
 
+//fonction d'insertion d'un résultat dans la base de données
 function insererResultat(int $nbQuestions, int $score): void
 {
     try{
-        //le fichier de BD s'appelera Quizz_BD.db
+        //établissement de la connexion avec la base de données
         $fichierDB=new PDO("sqlite:data/Quizz_BD.db");
         $fichierDB->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_WARNING);
+        
+        $id = idMax("RESULTAT") +1;
 
         $insertion="INSERT INTO RESULTAT (id, nbQuestions, nbReponsesCorrectes) VALUES (:id, :nbQuestions, :nbReponsesCorrectes)";
         $stmt=$fichierDB->prepare($insertion);
         $stmt->bindParam(":id",$id);
         $stmt->bindParam(":nbQuestions",$nbQuestions);
-        $stmt->bindParam(":nbReponsesCorrectes",$nbReponsesCorrectes);
+        $stmt->bindParam(":nbReponsesCorrectes",$score);
 
         $stmt->execute(); 
 
@@ -117,27 +105,28 @@ function insererResultat(int $nbQuestions, int $score): void
     }
 }
 
+//fonction d'insertion d'un quizz dans la base de données
 function insererQuestion(string $enonce, array $questions, array $corrections): void
 {
     try{
-        //le fichier de BD s'appelera Quizz_BD.db
+        //établissement de la connexion avec la base de données
         $fichierDB=new PDO("sqlite:data/Quizz_BD.db");
         $fichierDB->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_WARNING);
         
 
-        $idQuestion = idQuestionMax() +1;
+        $idQuestion = idMax("QUESTION") +1;
 
         $insertion="INSERT INTO QUESTION (id, enonce) VALUES (:id, :enonce)";
         $stmt=$fichierDB->prepare($insertion);
         $stmt->bindParam(":id",$idQuestion);
         $stmt->bindParam(":enonce",$enonce);
-
+        //insertion de la question
         $stmt->execute();
         
-        $idReponse = idReponseMax();
+        $idReponse = idMax("REPONSE");
         foreach ($questions as $cle => $valeur){
             
-            //s'il y a des caractères, on insère
+            //s'il y a la réponse comporte des caractère, elle est insérée
             if (!empty(trim($valeur))){
                 $idReponse += 1;
 
@@ -149,7 +138,7 @@ function insererQuestion(string $enonce, array $questions, array $corrections): 
                 $stmt=$fichierDB->prepare($insertion);
                 $stmt->bindParam(":id", $idReponse);
                 $stmt->bindParam(":contenu", $valeur);
-
+                //insertion de la réponse
                 $stmt->execute();
 
                 $insertion="INSERT INTO REPONSE_POSSIBLE (idQuestion, idReponse, correcte) VALUES (:idQuestion, :idReponse, :correcte)";
@@ -157,7 +146,7 @@ function insererQuestion(string $enonce, array $questions, array $corrections): 
                 $stmt->bindParam(":idQuestion", $idQuestion);
                 $stmt->bindParam(":idReponse", $idReponse);
                 $stmt->bindParam(":correcte", $correcte);
-
+                //insertion de l'association question - réponse
                 $stmt->execute();
             }
         }
@@ -169,6 +158,5 @@ function insererQuestion(string $enonce, array $questions, array $corrections): 
         echo "L'insertion a échoué. ".$e->getMessage();
     }
 }
-
 
 ?>

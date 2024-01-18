@@ -7,5 +7,31 @@ h1, h2{
 }
 
 p{
-    font-size: 1.3rem;
+    font-size: 1.4rem;
 }
+
+div{
+    background-color: white;
+    border: solid black;
+    border-radius: 2vh;
+    margin: 4vh auto;
+    padding: 2vh;
+    max-width: 20vw;
+}
+
+form input{
+    font-size: 1.2rem;
+    margin: 1vh;
+}
+
+form input[name="enonce"]{
+    font-size: 1.4rem;
+    width: 36vw;
+}
+
+form input[type="checkbox"] {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    transform: scale(1.5);
+  }

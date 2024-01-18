@@ -26,7 +26,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
         //si les données sont correctes, on insère le quizz dans la base de données
-        if ($valide){insererQuestion($enonce, $reponses, $corrections);}
+        if ($valide){
+            insererQuestion($enonce, $reponses, $corrections);
+            header("Location: index.php");
+            exit();
+        }
     }
 }
 
@@ -37,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="fr">
 <head>
     <meta charset="utf-8">
-    <?php echo "<title>Question ".$numQuestion."</title>"; ?>
+    <title>Création de quizz</title>
     <link rel="stylesheet" href="static/css/creation_quizz.css">
 </head>
 
@@ -50,9 +54,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h1>Création d'un quizz :</h1>
         <p>Ecrivez l'énoncé de votre question, renseignez une à cinq réponses, et cochez les réponses correctes.<p>
 
-        <?php //action='index.php
+        <?php
         echo "<form  method='post'>
-            <input type='text' name='enonce' placeholder='Énoncé de la question' required /><br>";
+            <input type='text' name='enonce' placeholder='Énoncé de la question' required /><br><div>";
             
             for ($i=1; $i < $nbMaxReponses+1; $i++){
                 echo "<label for='".$i."'>
@@ -61,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </label><br>";
             }
 
-            echo "<input type='submit' value='Enregistrer'>
+            echo "</div><input type='submit' value='Enregistrer'>
             </form>";
         ?>
         

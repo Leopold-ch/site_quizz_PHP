@@ -6,7 +6,7 @@ INSERT INTO QUESTION VALUES
     (5, "Quand a commencé la Renaissance italienne ?"),
     (6, "Combien de gouttes d'eau faut-il pour remplir une baignoire standart ? (à 50 millions près)"),
     (7, "Quand a été fondée l'université d'Orléans ?"),
-    (8, "Combien de Schtroumpf différent existe-t-il ?"),
+    (8, "Combien de Schtroumpfs différents existe-t-il ?"),
     (9, "A combien de mètres s'élève la plus haute tour du monde de Kapla jamais faite ?"),
     (10, "Parmi ces personnages, lesquels ont été inventés par Nintendo ?"),
     (11, "Parmi ces personnages, lesquels sont apparus après 1995 ?"),
