@@ -12,7 +12,7 @@ Site web porté sur les quizz, développé en PHP
 
 ## Commandes de lancement
 
-Pour lancer le serveur donannt accès au site, il est nécessaire d'utiliser la commande `php -S 127.0.0.1:5000` dans un terminal.
+Pour lancer le serveur donant accès au site, il est nécessaire d'utiliser la commande `php -S 127.0.0.1:5000` dans un terminal.
 Vous pouvez ensuite vous rendre à l'adresse [http://127.0.0.1:5000](http://127.0.0.1:5000).
 
 ## Fonctions du site
