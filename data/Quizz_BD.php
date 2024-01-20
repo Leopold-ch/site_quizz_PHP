@@ -39,7 +39,6 @@ function getQuizz(int $id): array
         //établissement de la connexion avec la base de données
         $fichierDB=new PDO("sqlite:data/Quizz_BD.db");
         $fichierDB->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_WARNING);
-    
         
         $resRequete=$fichierDB->query("select idQuestion, idReponse, correcte, enonce, contenu
         from REPONSE_POSSIBLE join QUESTION join REPONSE on (REPONSE_POSSIBLE.idQuestion = QUESTION.id) AND (REPONSE_POSSIBLE.idReponse = REPONSE.id)
@@ -56,6 +55,34 @@ function getQuizz(int $id): array
         echo "Problème de base de données : ".$e->getMessage();
     }
     return $question;
+
+}
+
+//fonction d'obtention des résultats
+function getResultats(string $nom="null"): array
+{
+    $resultats = array();
+    try{
+        //établissement de la connexion avec la base de données
+        $fichierDB=new PDO("sqlite:data/Quizz_BD.db");
+        $fichierDB->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_WARNING);
+        
+        $condition = "";
+        if ($nom != "null"){$condition = 'WHERE utilisateur="'.$nom.'"';}
+        
+        $resRequete=$fichierDB->query("select utilisateur, nbQuestions, nbReponsesCorrectes from RESULTAT ".$condition.";");
+    
+        foreach($resRequete as $r){
+            array_push($resultats, $r);
+        }
+
+        //fermeture de la connexion
+        $fichierDB=null;
+
+    }catch(PDOException $e){
+        echo "Problème de base de données : ".$e->getMessage();
+    }
+    return $resultats;
 
 }
 

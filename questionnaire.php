@@ -26,10 +26,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     exit();
 }
 
-if ($numQuestion > $nbTotalQuestions){
-    //redirection vers la page d'accueil si on est arrivé au bout des questions
+if ($numQuestion > $nbTotalQuestions){      //si on est arrivé à la fin du quizz
+    //enregristrement dans la base de données
     if (isset($nom)){insererResultat($nbTotalQuestions, $score, $nom);}
     else {insererResultat($nbTotalQuestions, $score);}
+    //redirection vers la page d'accueil
     header("Location: index.php?nom=".$nom);
     exit();
 }

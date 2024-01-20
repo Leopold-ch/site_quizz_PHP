@@ -1,14 +1,12 @@
 <link rel="stylesheet" href="static/css/header.css">
 <?php
-
+$nom = null;
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     if (isset($_POST["nom"])) {$nom = $_POST["nom"];}
 
 }
 if (!empty($_GET['nom'])){$nom = $_GET['nom'];}
-
-print_r($nom);
 ?>
 
 

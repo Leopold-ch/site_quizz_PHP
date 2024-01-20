@@ -2,6 +2,26 @@ body{
     text-align: center;
 }
 
-h1, h2{
+h1{
     margin: 10vh;
+}
+
+table{
+    border-collapse: collapse;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+th, td{
+    border: solid black;
+    padding: 2vh;
+    text-align: center;
+    font-size: 1.3rem;
+}
+
+th{
+    color: white;
+    background-color: black;
+    font-weight: bold;
 }

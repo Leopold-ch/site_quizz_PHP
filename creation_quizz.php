@@ -4,8 +4,6 @@ require 'data/Quizz_BD.php';
 $nbMaxReponses = 5;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    if (isset($_POST["nom"])) {$nom = $_POST["nom"];}
     
     if (isset($_POST["enonce"])) {$enonce = $_POST["enonce"];}
 
