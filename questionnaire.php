@@ -28,7 +28,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 if ($numQuestion > $nbTotalQuestions){
     //redirection vers la page d'accueil si on est arrivé au bout des questions
-    insererResultat($nbTotalQuestions, $score);
+    if (isset($nom)){insererResultat($nbTotalQuestions, $score, $nom);}
+    else {insererResultat($nbTotalQuestions, $score);}
     header("Location: index.php?nom=".$nom);
     exit();
 }
@@ -63,12 +64,16 @@ if ($numQuestion > $nbTotalQuestions){
     <div class='rep'>";
     foreach ($questionPosee as $reponsePossible) {
         $coche = "";
-        if (isset($choix) && in_array($reponsePossible["idReponse"], $choix)){
-            $coche = "checked";
+        $disabled = "";
+        if (isset($choix)){
+            $disabled = "disabled";
+            if (in_array($reponsePossible["idReponse"], $choix)){
+                $coche = "checked";
+            }
         }
         
         echo "<label for='".$reponsePossible["idReponse"]."'>
-        <input type='checkbox' id='".$reponsePossible["idReponse"]."' name='choix[]' value='".$reponsePossible["idReponse"]."' ".$coche."> ".$reponsePossible["contenu"]."</label><br>";
+        <input type='checkbox' id='".$reponsePossible["idReponse"]."' name='choix[]' value='".$reponsePossible["idReponse"]."' ".$coche." ".$disabled."> ".$reponsePossible["contenu"]."</label><br>";
     }
     echo "</div>";
     if (!isset($choix)){

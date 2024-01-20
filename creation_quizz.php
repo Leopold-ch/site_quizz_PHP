@@ -4,18 +4,14 @@ require 'data/Quizz_BD.php';
 $nbMaxReponses = 5;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    if (isset($_POST["nom"])) {$nom = $_POST["nom"];}
     
-    if (isset($_POST["enonce"])) {
-        $enonce = $_POST["enonce"];
-    }
+    if (isset($_POST["enonce"])) {$enonce = $_POST["enonce"];}
 
-    if (isset($_POST["reponses"])) {
-        $reponses = $_POST["reponses"];
-    }
+    if (isset($_POST["reponses"])) {$reponses = $_POST["reponses"];}
 
-    if (isset($_POST["corrections"])) {
-        $corrections = $_POST["corrections"];
-    }
+    if (isset($_POST["corrections"])) {$corrections = $_POST["corrections"];}
     
     //si l'utilisateur a saisi des réponses et à coché des cases
     if (!empty($reponses) && !empty($corrections)){
@@ -28,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         //si les données sont correctes, on insère le quizz dans la base de données
         if ($valide){
             insererQuestion($enonce, $reponses, $corrections);
-            header("Location: index.php");
+            header("Location: index.php?nom=".$nom);
             exit();
         }
     }

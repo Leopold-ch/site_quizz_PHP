@@ -80,7 +80,7 @@ function reponseCorrectes(int $idQuestion, array $reponses): bool
 }
 
 //fonction d'insertion d'un résultat dans la base de données
-function insererResultat(int $nbQuestions, int $score): void
+function insererResultat(int $nbQuestions, int $score, string $utilisateur="null"): void
 {
     try{
         //établissement de la connexion avec la base de données
@@ -89,9 +89,11 @@ function insererResultat(int $nbQuestions, int $score): void
         
         $id = idMax("RESULTAT") +1;
 
-        $insertion="INSERT INTO RESULTAT (id, nbQuestions, nbReponsesCorrectes) VALUES (:id, :nbQuestions, :nbReponsesCorrectes)";
+
+        $insertion="INSERT INTO RESULTAT (id, utilisateur, nbQuestions, nbReponsesCorrectes) VALUES (:id, :utilisateur, :nbQuestions, :nbReponsesCorrectes)";
         $stmt=$fichierDB->prepare($insertion);
         $stmt->bindParam(":id",$id);
+        $stmt->bindParam(":utilisateur",$utilisateur);
         $stmt->bindParam(":nbQuestions",$nbQuestions);
         $stmt->bindParam(":nbReponsesCorrectes",$score);
 
