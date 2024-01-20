@@ -39,7 +39,6 @@ function getQuizz(int $id): array
         //établissement de la connexion avec la base de données
         $fichierDB=new PDO("sqlite:data/Quizz_BD.db");
         $fichierDB->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_WARNING);
-    
         
         $resRequete=$fichierDB->query("select idQuestion, idReponse, correcte, enonce, contenu
         from REPONSE_POSSIBLE join QUESTION join REPONSE on (REPONSE_POSSIBLE.idQuestion = QUESTION.id) AND (REPONSE_POSSIBLE.idReponse = REPONSE.id)
@@ -56,6 +55,34 @@ function getQuizz(int $id): array
         echo "Problème de base de données : ".$e->getMessage();
     }
     return $question;
+
+}
+
+//fonction d'obtention des résultats
+function getResultats(string $nom="null"): array
+{
+    $resultats = array();
+    try{
+        //établissement de la connexion avec la base de données
+        $fichierDB=new PDO("sqlite:data/Quizz_BD.db");
+        $fichierDB->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_WARNING);
+        
+        $condition = "";
+        if ($nom != "null"){$condition = 'WHERE utilisateur="'.$nom.'"';}
+        
+        $resRequete=$fichierDB->query("select utilisateur, nbQuestions, nbReponsesCorrectes from RESULTAT ".$condition.";");
+    
+        foreach($resRequete as $r){
+            array_push($resultats, $r);
+        }
+
+        //fermeture de la connexion
+        $fichierDB=null;
+
+    }catch(PDOException $e){
+        echo "Problème de base de données : ".$e->getMessage();
+    }
+    return $resultats;
 
 }
 
@@ -80,7 +107,7 @@ function reponseCorrectes(int $idQuestion, array $reponses): bool
 }
 
 //fonction d'insertion d'un résultat dans la base de données
-function insererResultat(int $nbQuestions, int $score): void
+function insererResultat(int $nbQuestions, int $score, string $utilisateur="null"): void
 {
     try{
         //établissement de la connexion avec la base de données
@@ -89,9 +116,11 @@ function insererResultat(int $nbQuestions, int $score): void
         
         $id = idMax("RESULTAT") +1;
 
-        $insertion="INSERT INTO RESULTAT (id, nbQuestions, nbReponsesCorrectes) VALUES (:id, :nbQuestions, :nbReponsesCorrectes)";
+
+        $insertion="INSERT INTO RESULTAT (id, utilisateur, nbQuestions, nbReponsesCorrectes) VALUES (:id, :utilisateur, :nbQuestions, :nbReponsesCorrectes)";
         $stmt=$fichierDB->prepare($insertion);
         $stmt->bindParam(":id",$id);
+        $stmt->bindParam(":utilisateur",$utilisateur);
         $stmt->bindParam(":nbQuestions",$nbQuestions);
         $stmt->bindParam(":nbReponsesCorrectes",$score);
 

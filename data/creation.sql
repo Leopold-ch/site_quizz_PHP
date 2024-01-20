@@ -20,7 +20,8 @@ CREATE TABLE REPONSE_POSSIBLE (
 );
 
 CREATE TABLE RESULTAT (
-    id INTEGER NOT NULL,
+    id INTEGER PRIMARY KEY,
+    utilisateur VARCHAR(20),
     nbQuestions INTEGER NOT NULL,
     nbReponsesCorrectes INTEGER NOT NULL
 );

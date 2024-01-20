@@ -3,9 +3,7 @@ $nom = null;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
-    if (isset($_POST["nom"])) {
-        $nom = $_POST["nom"];
-    }
+    if (isset($_POST["nom"])) {$nom = $_POST["nom"];}
 }
 
 if (!empty($_GET['nom'])){$nom = $_GET['nom'];}
@@ -32,7 +30,7 @@ if (!empty($_GET['nom'])){$nom = $_GET['nom'];}
         <div class="nom">
             <p>Saisissez votre nom :</p>
             
-            <form method='post'>
+            <form action='index.php' method='post'>
                 <?php echo "<input type='text' name='nom' maxlength='20' value='".$nom."' placeholder='Votre nom' />"; ?>
 
                 <input type='submit' value='Envoyer'>
